@@ -1,0 +1,9 @@
+### Python ###
+__pycache__/
+Spacegame/venv
+.venv/
+.vscode/
+launch.json
+*sqlite
+temp/
+venv
