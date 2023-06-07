@@ -1,3 +1,5 @@
+from params import ROW_START, COLUMN_START
+
 SPACE_KEY_CODE = 32
 LEFT_KEY_CODE = 260
 RIGHT_KEY_CODE = 261
@@ -104,7 +106,7 @@ def get_controls_row_column(canvas, row, column, row_frame, column_frame, max_ro
     if row_step in [1, -1] or column_step in [1, -1]:
         row_new = row + row_step * speed
         column_new = column + column_step * speed
-        if (1 <= row_new <= max_row - row_frame - 1 and
-                1 <= column_new <= max_column - column_frame - 1):
+        if (ROW_START <= row_new <= max_row - row_frame - ROW_START and
+                COLUMN_START <= column_new <= max_column - column_frame - COLUMN_START):
             return row_new, column_new
     return row, column

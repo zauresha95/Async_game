@@ -4,10 +4,7 @@ from blink import get_random_blink
 from spaceship import animate_spaceship
 from curses_tools import draw_frame, get_frame
 from curses_tools import get_frames_size, get_controls_row_column
-
-BLINK_CNT = 10
-SPEED = 10
-ROW_START, COLUMN_START = 1, 1
+from params import ROW_START, COLUMN_START, BLINK_CNT, SPEED
 
 
 def draw(canvas):

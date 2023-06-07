@@ -1,6 +1,7 @@
 import random
 import curses
 from sleep import Sleep
+from params import ROW_START, COLUMN_START
 
 
 async def animate_blink(canvas, row, column, symbol):
@@ -25,7 +26,7 @@ async def animate_blink(canvas, row, column, symbol):
 def get_random_blink(canvas):
     simbols_list = ['+', '*', '.', ':']
     max_row, max_column = canvas.getmaxyx()
-    row = random.randint(1, max_row - 2)
-    column = random.randint(1, max_column - 2)
+    row = random.randint(ROW_START, max_row - ROW_START)
+    column = random.randint(COLUMN_START, max_column - COLUMN_START)
     simbol = random.choice(simbols_list)
     return animate_blink(canvas, row, column, simbol)

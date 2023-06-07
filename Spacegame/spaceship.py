@@ -5,8 +5,8 @@ from curses_tools import draw_frame
 async def animate_spaceship(canvas,
                             frame1,
                             frame2,
-                            row=1,
-                            column=1,
+                            row,
+                            column,
                             negative=False):
     draw_frame(canvas, row, column, frame1, negative)
     await Sleep(0.1)
