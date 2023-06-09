@@ -1,5 +1,3 @@
-from params import ROW_START, COLUMN_START
-
 SPACE_KEY_CODE = 32
 LEFT_KEY_CODE = 260
 RIGHT_KEY_CODE = 261
@@ -82,31 +80,7 @@ def get_frame_size(text):
     return rows, columns
 
 
-def get_frames_size(text1, text2):
-    """Calculate size of multiline text fragment, return pair — number of rows and colums."""
-
-    rows, columns = (0, 0)
-    for text in [text1, text2]:
-        lines = text.splitlines()
-        rows_new = len(lines)
-        columns_new = max([len(line) for line in lines])
-        rows = rows_new if rows_new > rows else rows
-        columns = columns_new if columns_new > columns else columns_new
-    return rows, columns
-
-
 def get_frame(path_file):
     with open(f"files/{path_file}", "r") as my_file:
         frame = my_file.read()
         return frame
-
-
-def get_controls_row_column(canvas, row, column, row_frame, column_frame, max_row, max_column, speed=1):
-    row_step, column_step, space = read_controls(canvas)
-    if row_step in [1, -1] or column_step in [1, -1]:
-        row_new = row + row_step * speed
-        column_new = column + column_step * speed
-        if (ROW_START <= row_new <= max_row - row_frame - ROW_START and
-                COLUMN_START <= column_new <= max_column - column_frame - COLUMN_START):
-            return row_new, column_new
-    return row, column
