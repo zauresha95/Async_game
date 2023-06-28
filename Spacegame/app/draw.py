@@ -1,10 +1,9 @@
 import time
 import random
 from blink import get_random_blink
-from obstacles import show_obstacles
 from spaceship import animate_spaceship
 from space_garbage import fill_orbit_with_garbage
-from params import obstacles, BLINK_CNT, year
+from params import BLINK_CNT, year
 from game_scenario import draw_year
 
 
@@ -14,7 +13,6 @@ def draw(canvas):
     # get the height and width of the window, that less than the border to 1
     rows, columns = canvas.getmaxyx()
     max_row, max_column = rows - 1, columns - 1
-    #canvas.subwin(0, 0)
     coroutines = [
         get_random_blink(
             canvas,

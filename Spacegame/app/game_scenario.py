@@ -4,7 +4,6 @@ from curses_tools import draw_frame
 
 
 PHRASES = {
-    # Только на английском, Repl.it ломается на кириллице
     1957: "First Sputnik",
     1961: "Gagarin flew!",
     1969: "Armstrong got on the moon!",
@@ -14,6 +13,7 @@ PHRASES = {
     2011: 'Messenger launch to Mercury',
     2020: "Take the plasma gun! Shoot the garbage!",
 }
+
 
 def get_garbage_delay_tics(year):
     if year < 1961:

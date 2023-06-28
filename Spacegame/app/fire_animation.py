@@ -1,20 +1,7 @@
 import asyncio
 import curses
-from params import obstacles, obstacles_in_last_collisions, year
+from params import obstacles, obstacles_in_last_collisions
 from explosion import explode
-
-
-async def fire_by_space(canvas,
-                        space,
-                        column_frame,
-                        params,
-                        rows_speed=-0.3,
-                        columns_speed=0):
-    if space and year[0] > 2000:
-        start_column = params['column'] + column_frame // 2
-        await fire(canvas, params['row'], start_column)
-    else:
-        await asyncio.sleep(0)
 
 
 async def fire(canvas,

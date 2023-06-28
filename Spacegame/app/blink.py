@@ -3,26 +3,17 @@ import curses
 import random
 from sleep import sleep
 
+
 async def animate_blink(canvas, row, column, symbol, offset_tics):
     while True:
-        # for _ in range(offset_tics):
-        #     await asyncio.sleep(0)
         await sleep(offset_tics)
         canvas.addstr(row, column, symbol, curses.A_DIM)
-        # for _ in range(20):
-        #     await asyncio.sleep(0)
         await sleep(20)
         canvas.addstr(row, column, symbol)
-        # for _ in range(3):
-        #     await asyncio.sleep(0)
         await sleep(3)
         canvas.addstr(row, column, symbol, curses.A_BOLD)
-        # for _ in range(5):
-        #     await asyncio.sleep(0)
         await sleep(5)
         canvas.addstr(row, column, symbol)
-        # for _ in range(3):
-        #     await asyncio.sleep(0)
         await sleep(3)
 
 

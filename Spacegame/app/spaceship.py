@@ -1,10 +1,10 @@
 import asyncio
 from curses_tools import draw_frame, get_frame
 from curses_tools import get_frame_size, read_controls
-from fire_animation import fire_by_space
+from fire_animation import fire
 from physics import update_speed
-from sleep import sleep
 from gameover import show_gameover
+from params import obstacles, obstacles_in_last_collisions, year
 
 
 async def animate_spaceship(canvas, coroutines, max_row, max_column):
@@ -26,16 +26,19 @@ async def animate_spaceship(canvas, coroutines, max_row, max_column):
         'row_speed': row_speed,
         'column_speed': column_speed
     }
-    draw_frame(canvas, row, column, frame1)
-    await sleep(2)
-
+    frame_flg = True
     while True:
-
+        if frame_flg:
+            frame_old, frame_new = frame1, frame2
+        else:
+            frame_old, frame_new = frame2, frame1
+        frame_flg = False if frame_flg else True
+        row, column = params['row'], params['column']
         row_step, column_step, space = read_controls(canvas)
         draw_frame(
             canvas,
-            params['row'], params['column'],
-            frame1,
+            row, column,
+            frame_old,
             negative=True
         )
         params = get_controls_row_column(
@@ -43,67 +46,27 @@ async def animate_spaceship(canvas, coroutines, max_row, max_column):
             max_space_row, max_space_column,
             **params
         )
+        row, column = params['row'], params['column']
         draw_frame(
             canvas,
-            params['row'], params['column'],
-            frame2
+            row, column,
+            frame_new
         )
-        coroutines.append(
-            fire_by_space(
-                canvas, space,
-                column_frame,
-                params
+        if space and year[0] > 2000:
+            coroutines.append(
+                fire_by_space(
+                    canvas,
+                    column_frame,
+                    row, column
+                )
             )
-        )
-        await show_gameover(
-            canvas,
-            params['row'], params['column'],
-            row_frame, column_frame, frame2
-        )
 
-        row_step, column_step, space = read_controls(canvas)
-        coroutines.append(
-            fire_by_space(
-                canvas, space, column_frame, params
-            )
-        )
-        await asyncio.sleep(0)
-
-        row_step, column_step, space = read_controls(canvas)
-        draw_frame(
-            canvas,
-            params['row'], params['column'],
-            frame2, negative=True
-        )
-        params = get_controls_row_column(
-            row_step, column_step,
-            max_space_row, max_space_column,
-            **params
-        )
-        draw_frame(
-            canvas,
-            params['row'], params['column'],
-            frame1
-        )
-        coroutines.append(
-            fire_by_space(
-                canvas, space, column_frame, params
-            )
-        )
-        await asyncio.sleep(0)
-
-        row_step, column_step, space = read_controls(canvas)
-        coroutines.append(
-            fire_by_space(
-                canvas, space, column_frame, params
-            )
-        )
-        await show_gameover(
-            canvas,
-            params['row'], params['column'],
-            row_frame, column_frame,
-            frame1
-        )
+        for obstacle in obstacles:
+            if obstacle.has_collision(row, column, row_frame, column_frame):
+                obstacles_in_last_collisions.append(obstacle)
+                draw_frame(canvas, row, column, frame_new, negative=True)
+                coroutines.append(show_gameover(canvas))
+                return True
         await asyncio.sleep(0)
 
 
@@ -124,3 +87,10 @@ def get_controls_row_column(row_step, column_step,
         'column_speed': column_speed
     }
     return params
+
+
+async def fire_by_space(canvas,
+                        column_frame,
+                        row, column):
+    start_column = column + column_frame // 2
+    await fire(canvas, row, start_column)
